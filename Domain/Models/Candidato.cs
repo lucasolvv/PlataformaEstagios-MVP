@@ -3,24 +3,34 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PlataformaEstagios.Domain.Models
 {
+    [Table("Candidatos")]
     public class Candidato
     {
-        public int Id { get; set; }
+        [Key]
+        public int CandidatoId { get; set; }
 
         [Required]
-        [ForeignKey("Usuario")]
         public int UsuarioId { get; set; }
+
         public Usuario Usuario { get; set; }
-        
-        [Required, MaxLength(100)]
+
+        [Required]
+        [MaxLength(100)]
         public string Nome { get; set; }
+
         public DateTime? DataNascimento { get; set; }
 
         [MaxLength(255)]
         public string? CurriculoUrl { get; set; }
+
+        [ForeignKey("Curso")]
         public int? CursoId { get; set; }
         public Curso? Curso { get; set; }
+
+        [ForeignKey("Endereco")]
+        public int EnderecoId { get; set; }
         public Endereco? Endereco { get; set; }
+
         public ICollection<Candidatura>? Candidaturas { get; set; }
     }
 }

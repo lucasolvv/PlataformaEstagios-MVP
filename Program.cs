@@ -1,5 +1,7 @@
+using Microsoft.EntityFrameworkCore;
 using MudBlazor.Services;
 using PlataformaEstagios.Components;
+using PlataformaEstagios.Infrastructure.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,7 +12,19 @@ builder.Services.AddMudServices();
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
+builder.Services.AddSqlServer<AppDbContext>(
+    builder.Configuration.GetConnectionString("DefaultConnection"));
+
+
+
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    db.Database.Migrate(); // Isso vai criar o banco se ainda não existir e aplicar as migrações
+}
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

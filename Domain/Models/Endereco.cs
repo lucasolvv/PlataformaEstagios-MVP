@@ -5,7 +5,7 @@ namespace PlataformaEstagios.Domain.Models
     public class Endereco
     {
         [Key]
-        public int Id { get; set; }
+        public int EnderecoId { get; set; }
 
         [Required, MaxLength(100)]
         public string Logradouro { get; set; }

@@ -5,7 +5,7 @@ namespace PlataformaEstagios.Domain.Models
     public class Curso
     {
         [Key]
-        public int Id { get; set; }
+        public int CursoId { get; set; }
 
         [Required, MaxLength(100)]
         public string Nome { get; set; }
@@ -13,6 +13,6 @@ namespace PlataformaEstagios.Domain.Models
         [MaxLength(100)]
         public string? Instituicao { get; set; }
 
-        public ICollection<Candidato> Candidatos { get; set; }
+        public ICollection<Candidato>? Candidatos { get; set; }
     }
 }

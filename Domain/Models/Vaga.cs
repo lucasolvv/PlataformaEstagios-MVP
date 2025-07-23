@@ -5,7 +5,7 @@ namespace PlataformaEstagios.Domain.Models
 {
     public class Vaga
     {
-        public int Id { get; set; }
+        public int VagaId { get; set; }
 
         [Required]
         [ForeignKey("Empresa")]
@@ -23,6 +23,6 @@ namespace PlataformaEstagios.Domain.Models
         public DateTime DataCriacao { get; set; } = DateTime.UtcNow;
         public DateTime? DataAtualizacao { get; set; }
 
-        public ICollection<Candidatura> Candidaturas { get; set; }
+        public ICollection<Candidatura>? Candidaturas { get; set; }
     }
 }
