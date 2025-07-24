@@ -12,7 +12,7 @@ namespace PlataformaEstagios.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Cursos",
+                name: "Curso",
                 columns: table => new
                 {
                     CursoId = table.Column<int>(type: "int", nullable: false)
@@ -22,11 +22,29 @@ namespace PlataformaEstagios.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Cursos", x => x.CursoId);
+                    table.PrimaryKey("PK_Curso", x => x.CursoId);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Usuarios",
+                name: "Endereco",
+                columns: table => new
+                {
+                    EnderecoId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Logradouro = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Complemento = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    Bairro = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Cidade = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    UF = table.Column<string>(type: "nvarchar(2)", maxLength: 2, nullable: false),
+                    CEP = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Endereco", x => x.EnderecoId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Usuario",
                 columns: table => new
                 {
                     UsuarioId = table.Column<int>(type: "int", nullable: false)
@@ -38,36 +56,11 @@ namespace PlataformaEstagios.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Usuarios", x => x.UsuarioId);
+                    table.PrimaryKey("PK_Usuario", x => x.UsuarioId);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Enderecos",
-                columns: table => new
-                {
-                    EnderecoId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Logradouro = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Complemento = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    Bairro = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Cidade = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    UF = table.Column<string>(type: "nvarchar(2)", maxLength: 2, nullable: false),
-                    CEP = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
-                    UsuarioId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Enderecos", x => x.EnderecoId);
-                    table.ForeignKey(
-                        name: "FK_Enderecos_Usuarios_UsuarioId",
-                        column: x => x.UsuarioId,
-                        principalTable: "Usuarios",
-                        principalColumn: "UsuarioId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Candidatos",
+                name: "Candidato",
                 columns: table => new
                 {
                     CandidatoId = table.Column<int>(type: "int", nullable: false)
@@ -77,32 +70,31 @@ namespace PlataformaEstagios.Migrations
                     DataNascimento = table.Column<DateTime>(type: "datetime2", nullable: true),
                     CurriculoUrl = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     CursoId = table.Column<int>(type: "int", nullable: true),
-                    EnderecoId = table.Column<int>(type: "int", nullable: false)
+                    EnderecoId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Candidatos", x => x.CandidatoId);
+                    table.PrimaryKey("PK_Candidato", x => x.CandidatoId);
                     table.ForeignKey(
-                        name: "FK_Candidatos_Cursos_CursoId",
+                        name: "FK_Candidato_Curso_CursoId",
                         column: x => x.CursoId,
-                        principalTable: "Cursos",
+                        principalTable: "Curso",
                         principalColumn: "CursoId");
                     table.ForeignKey(
-                        name: "FK_Candidatos_Enderecos_EnderecoId",
+                        name: "FK_Candidato_Endereco_EnderecoId",
                         column: x => x.EnderecoId,
-                        principalTable: "Enderecos",
-                        principalColumn: "EnderecoId",
-                        onDelete: ReferentialAction.Cascade);
+                        principalTable: "Endereco",
+                        principalColumn: "EnderecoId");
                     table.ForeignKey(
-                        name: "FK_Candidatos_Usuarios_UsuarioId",
+                        name: "FK_Candidato_Usuario_UsuarioId",
                         column: x => x.UsuarioId,
-                        principalTable: "Usuarios",
+                        principalTable: "Usuario",
                         principalColumn: "UsuarioId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Empresas",
+                name: "Empresa",
                 columns: table => new
                 {
                     EmpresaId = table.Column<int>(type: "int", nullable: false)
@@ -111,27 +103,26 @@ namespace PlataformaEstagios.Migrations
                     NomeFantasia = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     Cnpj = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
                     AreaAtuacao = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    EnderecoId = table.Column<int>(type: "int", nullable: false)
+                    EnderecoId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Empresas", x => x.EmpresaId);
+                    table.PrimaryKey("PK_Empresa", x => x.EmpresaId);
                     table.ForeignKey(
-                        name: "FK_Empresas_Enderecos_EnderecoId",
+                        name: "FK_Empresa_Endereco_EnderecoId",
                         column: x => x.EnderecoId,
-                        principalTable: "Enderecos",
-                        principalColumn: "EnderecoId",
-                        onDelete: ReferentialAction.Cascade);
+                        principalTable: "Endereco",
+                        principalColumn: "EnderecoId");
                     table.ForeignKey(
-                        name: "FK_Empresas_Usuarios_UsuarioId",
+                        name: "FK_Empresa_Usuario_UsuarioId",
                         column: x => x.UsuarioId,
-                        principalTable: "Usuarios",
+                        principalTable: "Usuario",
                         principalColumn: "UsuarioId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Vagas",
+                name: "Vaga",
                 columns: table => new
                 {
                     VagaId = table.Column<int>(type: "int", nullable: false)
@@ -145,17 +136,17 @@ namespace PlataformaEstagios.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Vagas", x => x.VagaId);
+                    table.PrimaryKey("PK_Vaga", x => x.VagaId);
                     table.ForeignKey(
-                        name: "FK_Vagas_Empresas_EmpresaId",
+                        name: "FK_Vaga_Empresa_EmpresaId",
                         column: x => x.EmpresaId,
-                        principalTable: "Empresas",
+                        principalTable: "Empresa",
                         principalColumn: "EmpresaId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Candidaturas",
+                name: "Candidatura",
                 columns: table => new
                 {
                     CandidaturaId = table.Column<int>(type: "int", nullable: false)
@@ -167,64 +158,59 @@ namespace PlataformaEstagios.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Candidaturas", x => x.CandidaturaId);
+                    table.PrimaryKey("PK_Candidatura", x => x.CandidaturaId);
                     table.ForeignKey(
-                        name: "FK_Candidaturas_Candidatos_CandidatoId",
+                        name: "FK_Candidatura_Candidato_CandidatoId",
                         column: x => x.CandidatoId,
-                        principalTable: "Candidatos",
+                        principalTable: "Candidato",
                         principalColumn: "CandidatoId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Candidaturas_Vagas_VagaId",
+                        name: "FK_Candidatura_Vaga_VagaId",
                         column: x => x.VagaId,
-                        principalTable: "Vagas",
+                        principalTable: "Vaga",
                         principalColumn: "VagaId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Candidatos_CursoId",
-                table: "Candidatos",
+                name: "IX_Candidato_CursoId",
+                table: "Candidato",
                 column: "CursoId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Candidatos_EnderecoId",
-                table: "Candidatos",
+                name: "IX_Candidato_EnderecoId",
+                table: "Candidato",
                 column: "EnderecoId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Candidatos_UsuarioId",
-                table: "Candidatos",
+                name: "IX_Candidato_UsuarioId",
+                table: "Candidato",
                 column: "UsuarioId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Candidaturas_CandidatoId",
-                table: "Candidaturas",
+                name: "IX_Candidatura_CandidatoId",
+                table: "Candidatura",
                 column: "CandidatoId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Candidaturas_VagaId",
-                table: "Candidaturas",
+                name: "IX_Candidatura_VagaId",
+                table: "Candidatura",
                 column: "VagaId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Empresas_EnderecoId",
-                table: "Empresas",
+                name: "IX_Empresa_EnderecoId",
+                table: "Empresa",
                 column: "EnderecoId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Empresas_UsuarioId",
-                table: "Empresas",
+                name: "IX_Empresa_UsuarioId",
+                table: "Empresa",
                 column: "UsuarioId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Enderecos_UsuarioId",
-                table: "Enderecos",
-                column: "UsuarioId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Vagas_EmpresaId",
-                table: "Vagas",
+                name: "IX_Vaga_EmpresaId",
+                table: "Vaga",
                 column: "EmpresaId");
         }
 
@@ -232,25 +218,25 @@ namespace PlataformaEstagios.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Candidaturas");
+                name: "Candidatura");
 
             migrationBuilder.DropTable(
-                name: "Candidatos");
+                name: "Candidato");
 
             migrationBuilder.DropTable(
-                name: "Vagas");
+                name: "Vaga");
 
             migrationBuilder.DropTable(
-                name: "Cursos");
+                name: "Curso");
 
             migrationBuilder.DropTable(
-                name: "Empresas");
+                name: "Empresa");
 
             migrationBuilder.DropTable(
-                name: "Enderecos");
+                name: "Endereco");
 
             migrationBuilder.DropTable(
-                name: "Usuarios");
+                name: "Usuario");
         }
     }
 }

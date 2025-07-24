@@ -40,7 +40,7 @@ namespace PlataformaEstagios.Migrations
                     b.Property<DateTime?>("DataNascimento")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("EnderecoId")
+                    b.Property<int?>("EnderecoId")
                         .HasColumnType("int");
 
                     b.Property<string>("Nome")
@@ -59,7 +59,7 @@ namespace PlataformaEstagios.Migrations
 
                     b.HasIndex("UsuarioId");
 
-                    b.ToTable("Candidatos");
+                    b.ToTable("Candidato");
                 });
 
             modelBuilder.Entity("PlataformaEstagios.Domain.Models.Candidatura", b =>
@@ -88,7 +88,7 @@ namespace PlataformaEstagios.Migrations
 
                     b.HasIndex("VagaId");
 
-                    b.ToTable("Candidaturas");
+                    b.ToTable("Candidatura");
                 });
 
             modelBuilder.Entity("PlataformaEstagios.Domain.Models.Curso", b =>
@@ -110,7 +110,7 @@ namespace PlataformaEstagios.Migrations
 
                     b.HasKey("CursoId");
 
-                    b.ToTable("Cursos");
+                    b.ToTable("Curso");
                 });
 
             modelBuilder.Entity("PlataformaEstagios.Domain.Models.Empresa", b =>
@@ -129,7 +129,7 @@ namespace PlataformaEstagios.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
-                    b.Property<int>("EnderecoId")
+                    b.Property<int?>("EnderecoId")
                         .HasColumnType("int");
 
                     b.Property<string>("NomeFantasia")
@@ -145,7 +145,7 @@ namespace PlataformaEstagios.Migrations
 
                     b.HasIndex("UsuarioId");
 
-                    b.ToTable("Empresas");
+                    b.ToTable("Empresa");
                 });
 
             modelBuilder.Entity("PlataformaEstagios.Domain.Models.Endereco", b =>
@@ -185,14 +185,9 @@ namespace PlataformaEstagios.Migrations
                         .HasMaxLength(2)
                         .HasColumnType("nvarchar(2)");
 
-                    b.Property<int>("UsuarioId")
-                        .HasColumnType("int");
-
                     b.HasKey("EnderecoId");
 
-                    b.HasIndex("UsuarioId");
-
-                    b.ToTable("Enderecos");
+                    b.ToTable("Endereco");
                 });
 
             modelBuilder.Entity("PlataformaEstagios.Domain.Models.Usuario", b =>
@@ -223,7 +218,7 @@ namespace PlataformaEstagios.Migrations
 
                     b.HasKey("UsuarioId");
 
-                    b.ToTable("Usuarios");
+                    b.ToTable("Usuario");
                 });
 
             modelBuilder.Entity("PlataformaEstagios.Domain.Models.Vaga", b =>
@@ -259,7 +254,7 @@ namespace PlataformaEstagios.Migrations
 
                     b.HasIndex("EmpresaId");
 
-                    b.ToTable("Vagas");
+                    b.ToTable("Vaga");
                 });
 
             modelBuilder.Entity("PlataformaEstagios.Domain.Models.Candidato", b =>
@@ -270,9 +265,7 @@ namespace PlataformaEstagios.Migrations
 
                     b.HasOne("PlataformaEstagios.Domain.Models.Endereco", "Endereco")
                         .WithMany()
-                        .HasForeignKey("EnderecoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("EnderecoId");
 
                     b.HasOne("PlataformaEstagios.Domain.Models.Usuario", "Usuario")
                         .WithMany()
@@ -292,13 +285,13 @@ namespace PlataformaEstagios.Migrations
                     b.HasOne("PlataformaEstagios.Domain.Models.Candidato", "Candidato")
                         .WithMany("Candidaturas")
                         .HasForeignKey("CandidatoId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("PlataformaEstagios.Domain.Models.Vaga", "Vaga")
                         .WithMany("Candidaturas")
                         .HasForeignKey("VagaId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Candidato");
@@ -310,9 +303,7 @@ namespace PlataformaEstagios.Migrations
                 {
                     b.HasOne("PlataformaEstagios.Domain.Models.Endereco", "Endereco")
                         .WithMany()
-                        .HasForeignKey("EnderecoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("EnderecoId");
 
                     b.HasOne("PlataformaEstagios.Domain.Models.Usuario", "Usuario")
                         .WithMany()
@@ -321,17 +312,6 @@ namespace PlataformaEstagios.Migrations
                         .IsRequired();
 
                     b.Navigation("Endereco");
-
-                    b.Navigation("Usuario");
-                });
-
-            modelBuilder.Entity("PlataformaEstagios.Domain.Models.Endereco", b =>
-                {
-                    b.HasOne("PlataformaEstagios.Domain.Models.Usuario", "Usuario")
-                        .WithMany()
-                        .HasForeignKey("UsuarioId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
 
                     b.Navigation("Usuario");
                 });
