@@ -3,13 +3,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PlataformaEstagios.Domain.Models
 {
+    [Table("Vaga")]
     public class Vaga
     {
         public int VagaId { get; set; }
 
         [Required]
         [ForeignKey("Empresa")]
-        public int EmpresaId { get; set; }
+        public int? EmpresaId { get; set; }
         public Empresa Empresa { get; set; }
 
         [Required, MaxLength(100)]

@@ -4,17 +4,19 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PlataformaEstagios.Domain.Models
 {
+    [Table("Candidatura")]
     public class Candidatura
     {
         public int CandidaturaId { get; set; }
 
         [Required]
         [ForeignKey("Vaga")]
-        public int VagaId { get; set; }
+        public int? VagaId { get; set; }
         public Vaga Vaga { get; set; }
 
         [Required]
-        public int CandidatoId { get; set; }
+        [ForeignKey("Candidato")]
+        public int? CandidatoId { get; set; }
         public Candidato Candidato { get; set; }
         public DateTime DataCandidatura { get; set; } = DateTime.UtcNow;
         public StatusCandidatura Status { get; set; } = StatusCandidatura.Pendente;

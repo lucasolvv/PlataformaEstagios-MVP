@@ -1,7 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PlataformaEstagios.Domain.Models
 {
+    [Table("Endereco")]
     public class Endereco
     {
         [Key]
@@ -24,8 +26,5 @@ namespace PlataformaEstagios.Domain.Models
 
         [Required, MaxLength(10)]
         public string CEP { get; set; }
-
-        public int UsuarioId { get; set; }
-        public Usuario Usuario { get; set; }
     }
 }

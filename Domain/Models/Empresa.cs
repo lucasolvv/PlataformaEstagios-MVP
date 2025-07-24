@@ -3,13 +3,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PlataformaEstagios.Domain.Models
 {
-    [Table("Empresas")]
+    [Table("Empresa")]
     public class Empresa
     {
         [Key]
         public int EmpresaId { get; set; }
 
         [Required]
+        [ForeignKey("Usuario")]
         public int UsuarioId { get; set; }
 
         public Usuario Usuario { get; set; }
@@ -23,7 +24,7 @@ namespace PlataformaEstagios.Domain.Models
         [MaxLength(100)]
         public string? AreaAtuacao { get; set; }
         [ForeignKey("Endereco")]
-        public int EnderecoId { get; set; }
+        public int? EnderecoId { get; set; }
         public Endereco? Endereco { get; set; }
 
         public ICollection<Vaga> Vagas { get; set; } = new List<Vaga>();

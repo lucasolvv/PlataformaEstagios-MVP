@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PlataformaEstagios.Domain.Models
 {
-    [Table("Usuarios")]
+    [Table("Usuario")]
     public class Usuario
     {
         [Key]
