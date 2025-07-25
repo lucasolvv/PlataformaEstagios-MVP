@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using MudBlazor.Services;
 using PlataformaEstagios.Components;
 using PlataformaEstagios.Infrastructure.Data;
+using PlataformaEstagios.Services.Usuario;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,7 +16,7 @@ builder.Services.AddRazorComponents()
 builder.Services.AddSqlServer<AppDbContext>(
     builder.Configuration.GetConnectionString("DefaultConnection"));
 
-
+builder.Services.AddScoped<IUserServices, UserService>();
 
 var app = builder.Build();
 
