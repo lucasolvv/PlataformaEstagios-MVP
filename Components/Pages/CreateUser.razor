@@ -1,0 +1,110 @@
+﻿@page "/"
+@using MudBlazor
+@inject ISnackbar Snackbar;
+@using PlataformaEstagios.Domain.Contracts.NewUserContracts;
+@using PlataformaEstagios.Domain.Contracts;
+@using PlataformaEstagios.Services.Usuario;
+@inject IUserServices UserServices;
+
+<MudPaper Class="pa-6 mx-auto mt-12" Style="max-width: 80%">
+    <MudText Typo="Typo.h5">Criar Novo Usuário</MudText>
+
+    <MudForm @ref="_form" OnValidSubmit="HandleValidSubmit">
+
+        <MudTextField @bind-Value="_user.Nickname" Label="Nome de Usuario" Required="true" />
+        <MudTextField @bind-Value="_user.Email" Label="Email" Required="true" />
+        <MudTextField @bind-Value="_user.Senha" Label="Senha" InputType="InputType.Password" Required="true" />
+
+        <MudSelect T="string" Label="Tipo de Usuário" Value="_user.tipoUsuario" ValueChanged="OnTipoUsuarioChanged" ValueExpression="() => _user.tipoUsuario" Required="true" Class="my-2">
+            <MudSelectItem Value="@("Candidato")">Candidato</MudSelectItem>
+            <MudSelectItem Value="@("Empresa")">Empresa</MudSelectItem>
+        </MudSelect>
+
+        @if (_user.tipoUsuario == "Candidato")
+        {
+            <MudDivider Class="my-4" />
+            <MudText Typo="Typo.h6">Dados Pessoais</MudText>
+            <MudTextField @bind-Value="_user.Candidato.NomeCompleto" Label="Nome Completo" />
+            <MudDatePicker @bind-Date="_user.Candidato.DataNascimento" Label="Data de Nascimento" />
+            <MudTextField @bind-Value="_user.Candidato.Cpf"
+                          Label="CPF"
+                          Mask="@(new PatternMask("000.000.000-00"))"
+                          MaskChar="_"
+                          InputMode="InputMode.text"
+                          />
+            <MudText Typo="Typo.h6" Class="mt-4">Endereço</MudText>
+            <MudTextField @bind-Value="_user.Candidato.Endereco.Logradouro" Label="Logradouro e número" />
+            <MudTextField @bind-Value="_user.Candidato.Endereco.Bairro" Label="Bairro" />
+            <MudTextField @bind-Value="_user.Candidato.Endereco.Complemento" Label="Complemento" />
+            <MudTextField @bind-Value="_user.Candidato.Endereco.Cidade" Label="Cidade" />
+            <MudTextField @bind-Value="_user.Candidato.Endereco.UF" Label="Estado" />
+        }
+
+        @if (_user.tipoUsuario == "Empresa")
+        {
+            <MudDivider Class="my-4" />
+            <MudText Typo="Typo.h6">Dados da Empresa</MudText>
+            <MudTextField @bind-Value="_user.Empresa.NomeFantasia" Label="Nome Fantasia" />
+            <MudTextField @bind-Value="_user.Empresa.Cnpj"
+                          Label="CNPJ"
+                          Mask="@(new PatternMask("99.999.999/9999-99"))"
+                          MaskChar="_"
+                          InputMode="InputMode.text" />
+            <MudTextField @bind-Value="_user.Empresa.AreaAtuacao" Label="Área de Atuação" />
+            <MudTextField @bind-Value="_user.Empresa.Endereco.Logradouro" Label="Logradouro" />
+            <MudTextField @bind-Value="_user.Empresa.Endereco.Cidade" Label="Cidade" />
+            <MudTextField @bind-Value="_user.Empresa.Endereco.Cep"
+                          Label="CEP"
+                          Mask="@(new PatternMask("00000-00"))"
+                          MaskChar="_"
+                          InputMode="InputMode.text" />
+        }
+
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="mt-4" OnClick="HandleValidSubmit">Criar</MudButton>
+    </MudForm>
+</MudPaper>
+
+@code {
+    private MudForm _form;
+    private UsuarioCreateContract _user = new();
+
+
+    private async Task OnTipoUsuarioChanged(string tipo)
+    {
+        _user.tipoUsuario = tipo;
+
+        if (tipo == "Candidato")
+        {
+            _user.Candidato = new()
+            {
+                Endereco = new EnderecoContract()
+            };
+            _user.Empresa = null;
+        }
+        else if (tipo == "Empresa")
+        {
+            _user.Empresa = new()
+            {
+                Endereco = new EnderecoContract()
+            };
+            _user.Candidato = null;
+        }
+
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        try
+        {
+            await UserServices.CreateUserAsync(_user);
+            Snackbar.Add("Usuário criado com sucesso!", Severity.Success);
+            //_user = new(); // limpa o form 
+           
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Erro: {ex.Message}", Severity.Error);
+        }
+    }
+}
