@@ -37,7 +37,17 @@
             <MudTextField @bind-Value="_user.Candidato.Endereco.Bairro" Label="Bairro" />
             <MudTextField @bind-Value="_user.Candidato.Endereco.Complemento" Label="Complemento" />
             <MudTextField @bind-Value="_user.Candidato.Endereco.Cidade" Label="Cidade" />
-            <MudTextField @bind-Value="_user.Candidato.Endereco.UF" Label="Estado" />
+            <MudSelect T="string" Label="Estado" @bind-Value="_user.Candidato.Endereco.UF" Required="true">
+                @foreach (var estado in SiglasEstados)
+                {
+                    <MudSelectItem Value="@estado">@estado</MudSelectItem>
+                }
+            </MudSelect>
+            <MudTextField @bind-Value="_user.Candidato.Endereco.Cep"
+                          Label="CEP"
+                          Mask="@(new PatternMask("00000-00"))"
+                          MaskChar="_"
+                          InputMode="InputMode.text" />
         }
 
         @if (_user.tipoUsuario == "Empresa")
@@ -46,13 +56,20 @@
             <MudText Typo="Typo.h6">Dados da Empresa</MudText>
             <MudTextField @bind-Value="_user.Empresa.NomeFantasia" Label="Nome Fantasia" />
             <MudTextField @bind-Value="_user.Empresa.Cnpj"
-                          Label="CNPJ"
+                          Label="CNPJJJ"
                           Mask="@(new PatternMask("99.999.999/9999-99"))"
                           MaskChar="_"
                           InputMode="InputMode.text" />
             <MudTextField @bind-Value="_user.Empresa.AreaAtuacao" Label="Área de Atuação" />
-            <MudTextField @bind-Value="_user.Empresa.Endereco.Logradouro" Label="Logradouro" />
+            <MudTextField @bind-Value="_user.Empresa.Endereco.Logradouro" Label="Logradouro e número" />
             <MudTextField @bind-Value="_user.Empresa.Endereco.Cidade" Label="Cidade" />
+            <MudTextField @bind-Value="_user.Empresa.Endereco.Bairro" Label="Bairro" />
+            <MudSelect T="string" Label="Estado" @bind-Value="_user.Empresa.Endereco.UF" Required="true">
+                @foreach (var estado in SiglasEstados)
+                {
+                    <MudSelectItem Value="@estado">@estado</MudSelectItem>
+                }
+            </MudSelect>
             <MudTextField @bind-Value="_user.Empresa.Endereco.Cep"
                           Label="CEP"
                           Mask="@(new PatternMask("00000-00"))"
@@ -106,5 +123,12 @@
         {
             Snackbar.Add($"Erro: {ex.Message}", Severity.Error);
         }
+
     }
+    public static readonly string[] SiglasEstados = new[]
+   {
+        "AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO",
+        "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI",
+        "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO"
+    };
 }

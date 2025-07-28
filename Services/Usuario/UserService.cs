@@ -5,6 +5,7 @@ using PlataformaEstagios.Domain.Contracts.NewUserContracts;
 using PlataformaEstagios.Domain.Enums;
 using PlataformaEstagios.Domain.Models;
 using Microsoft.AspNetCore.Http.HttpResults;
+using PlataformaEstagios.Utils;
 
 namespace PlataformaEstagios.Services.Usuario
 {
@@ -15,16 +16,31 @@ namespace PlataformaEstagios.Services.Usuario
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
+        public async Task Login(LoginContract credentials)
+        {
+            if (credentials == null)
+                throw new ArgumentNullException(nameof(credentials));
+
+                        // TODO: Implement login logic
+
+            throw new NotImplementedException();
+        }
+
         public async Task CreateUserAsync(UsuarioCreateContract user)
         {
             if (user == null)
                 throw new ArgumentNullException(nameof(user));
 
+            var userExists = await _context.Usuarios
+                .AnyAsync(u => u.Email == user.Email || u.NickName == user.Nickname);
+
+            if (userExists) throw new InvalidOperationException("Usuário já existe com este email ou nickname.");
+
             var usuario = new Domain.Models.Usuario
             {
                 NickName = user.Nickname,
                 Email = user.Email,
-                SenhaHash = user.Senha, // implementar hash
+                SenhaHash = PasswordHasher.Encrypt(user.Senha), // implementar hash
                 Tipo = ParseTipoUsuario(user.tipoUsuario)
             };
 
