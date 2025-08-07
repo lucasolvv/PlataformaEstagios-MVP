@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using MudBlazor.Services;
+using PlataformaEstagios.Application.Services.Usuario;
 using PlataformaEstagios.Components;
 using PlataformaEstagios.Infrastructure.Data;
-using PlataformaEstagios.Services.Usuario;
 
 var builder = WebApplication.CreateBuilder(args);
 

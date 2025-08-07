@@ -1,6 +1,6 @@
-﻿namespace PlataformaEstagios.Domain.Contracts.NewUserContracts
+﻿namespace PlataformaEstagios.Domain.Dtos
 {
-    public class LoginContract
+    public class LoginDto
     {
         public string NickName { get; set; }
         public string Password { get; set; }

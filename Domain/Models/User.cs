@@ -4,11 +4,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PlataformaEstagios.Domain.Models
 {
-    [Table("Usuario")]
-    public class Usuario
+    [Table("Users")]
+    public class User
     {
         [Key]
-        public int UsuarioId { get; set; }
+        public int UserId { get; set; }
 
         [Required]
         [MaxLength(100)]
@@ -21,10 +21,10 @@ namespace PlataformaEstagios.Domain.Models
 
         [Required]
         [MaxLength(100)]
-        public string SenhaHash { get; set; }
+        public string PasswordHash { get; set; }
 
         [Required]
-        [EnumDataType(typeof(TipoUsuario))]
-        public TipoUsuario Tipo { get; set; }
+        [EnumDataType(typeof(UserType))]
+        public UserType UserType { get; set; }
     }
 }

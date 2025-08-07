@@ -1,5 +1,6 @@
 ﻿@page "/"
 @using MudBlazor
+@using PlataformaEstagios.Application.Services.Usuario
 @inject ISnackbar Snackbar;
 @using PlataformaEstagios.Domain.Contracts.NewUserContracts;
 @using PlataformaEstagios.Domain.Contracts;
@@ -55,11 +56,7 @@
             <MudDivider Class="my-4" />
             <MudText Typo="Typo.h6">Dados da Empresa</MudText>
             <MudTextField @bind-Value="_user.Empresa.NomeFantasia" Label="Nome Fantasia" />
-            <MudTextField @bind-Value="_user.Empresa.Cnpj"
-                          Label="CNPJJJ"
-                          Mask="@(new PatternMask("99.999.999/9999-99"))"
-                          MaskChar="_"
-                          InputMode="InputMode.text" />
+            <MudTextField Mask="@(new PatternMask("00.000.000/0000-00"))" @bind-Value="_user.Empresa.Cnpj" Label="CNPJ" InputMode="InputMode.text" />
             <MudTextField @bind-Value="_user.Empresa.AreaAtuacao" Label="Área de Atuação" />
             <MudTextField @bind-Value="_user.Empresa.Endereco.Logradouro" Label="Logradouro e número" />
             <MudTextField @bind-Value="_user.Empresa.Endereco.Cidade" Label="Cidade" />
@@ -92,16 +89,14 @@
 
         if (tipo == "Candidato")
         {
-            _user.Candidato = new()
-            {
+            _user.CandidatoAddressDto      {
                 Endereco = new EnderecoContract()
             };
             _user.Empresa = null;
         }
         else if (tipo == "Empresa")
         {
-            _user.Empresa = new()
-            {
+            _user.EmpresaAddressDto      {
                 Endereco = new EnderecoContract()
             };
             _user.Candidato = null;

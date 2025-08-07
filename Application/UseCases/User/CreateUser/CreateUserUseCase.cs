@@ -5,26 +5,26 @@ using PlataformaEstagios.Domain.Contracts.NewUserContracts;
 using PlataformaEstagios.Domain.Enums;
 using PlataformaEstagios.Domain.Models;
 using Microsoft.AspNetCore.Http.HttpResults;
-using PlataformaEstagios.Utils;
+using PlataformaEstagios.Application.Helpers;
 
-namespace PlataformaEstagios.Services.Usuario
+namespace PlataformaEstagios.Application.UseCases.User.CreateUser
 {
-    public class UserService : IUserServices
+    public class CreateUserUseCase : ICreateUserUseCase
     {
         private readonly AppDbContext _context;
-        public UserService(AppDbContext context)
+        public CreateUserUseCase(AppDbContext context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
-        public async Task Login(LoginContract credentials)
-        {
-            if (credentials == null)
-                throw new ArgumentNullException(nameof(credentials));
+        //public async Task Login(LoginContract credentials)
+        //{
+        //    if (credentials == null)
+        //        throw new ArgumentNullException(nameof(credentials));
 
-                        // TODO: Implement login logic
+        //                // TODO: Implement login logic
 
-            throw new NotImplementedException();
-        }
+        //    throw new NotImplementedException();
+        //}
 
         public async Task CreateUserAsync(UsuarioCreateContract user)
         {
@@ -36,7 +36,7 @@ namespace PlataformaEstagios.Services.Usuario
 
             if (userExists) throw new InvalidOperationException("Usuário já existe com este email ou nickname.");
 
-            var usuario = new Domain.Models.Usuario
+            var usuario = new Domain.Models.User
             {
                 NickName = user.Nickname,
                 Email = user.Email,
@@ -51,7 +51,7 @@ namespace PlataformaEstagios.Services.Usuario
             // 2. Se for Candidato
             if (user.Candidato != null)
             {
-                var candidato = new Candidato
+                var candidato = new Candidate
                 {
                     UsuarioId = usuario.UsuarioId,
                     Nome = user.Candidato.NomeCompleto,
@@ -66,7 +66,7 @@ namespace PlataformaEstagios.Services.Usuario
             // 3. Se for Empresa
             if (user.Empresa != null)
             {
-                var empresa = new Empresa
+                var empresa = new Enterprise
                 {
                     UsuarioId = usuario.UsuarioId,
                     NomeFantasia = user.Empresa.NomeFantasia,
@@ -80,52 +80,22 @@ namespace PlataformaEstagios.Services.Usuario
             }
         }
 
-        public Task<bool> DeleteCandidatoAsync(int userId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<EnderecoContract> GetAllCandidatosAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<EnderecoContract> GetCandidatoByIdAsync(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<Endereco?> GetEnderecoByIdAsync(int enderecoId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<bool> UpdateCandidatoAsync(int candidatoId, CandidatoCreateContract candidatoUpdateContract)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<bool> UpdateEmpresaAsync(int empresaId, EmpresaCreateContract empresaUpdateContract)
-        {
-            throw new NotImplementedException();
-        }
-
-        private static TipoUsuario ParseTipoUsuario(string tipo) // passar isso para um helper
+        private static UserType ParseTipoUsuario(string tipo) // passar isso para um helper
         {
             return tipo.ToLower() switch
             {
-                "candidato" => TipoUsuario.Candidato,
-                "empresa" => TipoUsuario.Empresa,
+                "candidato" => UserType.Candidato,
+                "empresa" => UserType.Empresa,
                 _ => throw new ArgumentException($"Tipo de usuário inválido: {tipo}")
             };
         }
 
-        private static Endereco MapEndereco(EnderecoContract contract)
+        private static Address MapEndereco(AddressDto contract)
         {
             if (contract == null)
                 throw new ArgumentNullException(nameof(contract));
 
-            return new Endereco
+            return new Address
             {
                 Logradouro = contract.Logradouro ?? string.Empty,
                 Complemento = contract.Complemento,

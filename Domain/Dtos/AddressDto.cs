@@ -1,6 +1,6 @@
 ﻿namespace PlataformaEstagios.Domain.Contracts
 {
-    public class EnderecoContract
+    public class AddressDto
     {
         public string? Logradouro { get; set; }
         public string? Complemento { get; set; }

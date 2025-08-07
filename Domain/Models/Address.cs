@@ -3,23 +3,23 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PlataformaEstagios.Domain.Models
 {
-    [Table("Endereco")]
-    public class Endereco
+    [Table("Addresses")]
+    public class Address
     {
         [Key]
-        public int EnderecoId { get; set; }
+        public int AddressId { get; set; }
 
         [Required, MaxLength(100)]
-        public string? Logradouro { get; set; }
+        public string? Street { get; set; }
 
         [MaxLength(50)]
-        public string? Complemento { get; set; }
+        public string? Complement { get; set; }
 
         [Required, MaxLength(50)]
-        public string? Bairro { get; set; }
+        public string? Neighborhood { get; set; }
 
         [Required, MaxLength(50)]
-        public string? Cidade { get; set; }
+        public string? City { get; set; }
 
         [Required, MaxLength(2)]
         public string? UF { get; set; }
